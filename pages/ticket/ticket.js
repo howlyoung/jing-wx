@@ -1,5 +1,7 @@
 // pages/ticket/ticket.js
 var common = require('../../common.js')
+import WxValidate from '../../utils/WxValidate.js'
+
 Page({
       // {title: '武当派', code: 'sdfsdfsdffsfd',  expressAddress: '太华山', addressee: '张三丰', mobile: '151651654', mail: 'sdfsd@sdf.com', bankCode: '武林商业银行'},
       // { title: '峨眉派', code: '48464864846', expressAddress: '昆仑山', addressee: '周芷若', mobile: '15164511651', mail: 'cdcdc@sdf.com', bankCode: '武林商业银行'}
@@ -29,6 +31,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.initValidate()
     var token = wx.getStorageSync('token')
     var that = this
     wx.request({
@@ -36,11 +39,20 @@ Page({
       success: function (res) {
         var r = res.data
          console.log(r)
-        if (r.code == 1) {
+        if (r.code == 1 && r.data.length != 0) {
           that.setData({
-            ticket: r.data
+            ticket: r.data,
+            code: r.data[0].code,
+            expressAddress: r.data[0].expressAddress,
+            addressee: r.data[0].addressee,
+            mobile: r.data[0].mobile,
+            mail: r.data[0].mail,
+            bank: r.data[0].bankCode,
+            title: r.data[0].title,
+            titleFlag: true
           })
         }
+
         console.log(that.data)
       }
     })
@@ -139,11 +151,11 @@ Page({
       var that = this
       var data = this.data
 
-    // if (!this.WxValidate.checkForm(data.form)) {
-    //   const error = this.WxValidate.errorList[0]
-    //   this.showModal(error)
-    //   return false
-    // }
+    if (!this.WxValidate.checkForm({title:data.title,code:data.code})) {
+      const error = this.WxValidate.errorList[0]
+      this.showModal(error)
+      return false
+    }
 
     // for(var k in data.imageTitleArr) {
     //   if(data.imageTitleArr[k].src == '') {
@@ -243,6 +255,36 @@ Page({
   user: function () {
     wx.navigateTo({
       url: '../index/index',
+    })
+  },
+  initValidate: function () {
+    const rules = {
+      title: {
+        required: true,
+        rangelength: [5, 20]
+      },
+      code: {
+        required: true,
+        rangelength: [10, 20]
+      }
+    }
+
+    const messages = {
+      title: {
+        required: '请输入抬头',
+        rangelength: ''
+      },
+      code: {
+        required: '请输入识别号',
+        rangelength: ''
+      }
+    }
+    this.WxValidate = new WxValidate(rules, messages)
+  },
+  showModal: function (error) {
+    wx.showModal({
+      content: error.msg,
+      showCancel: false
     })
   }
 })

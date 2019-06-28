@@ -37,7 +37,7 @@
           </view>
           <view class="weui-cell weui-cell">
             <block wx:if="{{item.src != ''}}">
-              <image src="{{item.src}}" mode="aspectFill"  ></image>
+              <image class="thumb-image" src="{{item.src}}" mode="aspectFill"  ></image>
             </block>
           </view>
         </view>
