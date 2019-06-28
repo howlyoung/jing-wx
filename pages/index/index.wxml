@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<import src="../template/template" />
+<view class="container">
+    <image  class="userinfo-avatar" src="logo.png" mode="cover"></image>
+  <view class="flex fix_nav_wp">
+      <block wx:for="{{navData}}">
+          <template is="nav" data="{{...item}}"/>
+      </block>
+  </view> 
+</view>
