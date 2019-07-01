@@ -51,7 +51,6 @@ Page({
   }
   ,
   onLoad: function () {
-
     var that = this
 
     common.checkLoginStatus(function () {

@@ -39,3 +39,4 @@ margin-left:0;margin-right:0;border-radius:0;}
 .text-primary{color:#00a2e9;}
 .empty-block {height: 120rpx;}
 .thumb-image {width: 400rpx;height: 300rpx;}
+.text_center {text-align: center;}

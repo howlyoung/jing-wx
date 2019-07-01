@@ -12,14 +12,7 @@ Page({
       {name: '公司', value: 1, key: 1 }
     ]
   },
-  radioChange: function(e) {
-
-  },
-  radioClick: function(e) {
-    console.log(1)
-  },
   formSubmit: function(e) {
-    console.log(e.detail.value)
     var data = e.detail.value
     if(!this.WxValidate.checkForm(data)) {
       const error = this.WxValidate.errorList[0]
@@ -52,11 +45,17 @@ Page({
             content: '提交成功',
             showCancel: false,
             success: function(res) {
-
               wx.navigateTo({
                 url: '../index/index',
               })
             }
+          })
+        } else {
+          commom.login(function() {
+            wx.showModal({
+              content: 'token已失效，已重新登录!',
+              showCancel: false
+            })
           })
         }
       }
@@ -66,16 +65,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    commom.checkLoginStatus()
-    var userStatus = wx.getStorageSync('user_status')
-    if(userStatus != 0) {
-      console.log('跳转')
-      wx.navigateTo({
-        url: '../index/index',
-      })
-    } else {
-      this.initValidate()
-    }
+    var that = this
+
+    commom.checkLoginStatus(function() {
+      var userStatus = wx.getStorageSync('user_status')
+      if (userStatus != 0) {
+        wx.navigateTo({
+          url: '../index/index',
+        })
+      } else {
+        that.initValidate()
+      }
+    })
+
   },
 
   /**

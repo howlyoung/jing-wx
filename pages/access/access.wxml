@@ -21,7 +21,8 @@
             <input class="weui-input" name="mobile" placeholder=''></input>
           </view>
         </view>
-        <radio-group bindchange="radioChange" name="type">
+        <view class="weui-cell">客户类型</view>
+        <radio-group  bindchange="radioChange" name="type">
           <label class="weui-cell weui-check__label" wx:for="{{radioItems}}" wx:key="index">
             <radio data-id="{{item.key}}" value="{{item.value}}" checked="{{item.checked}}" />
               <view class="weui-cell__bd">{{item.name}}</view>
@@ -30,28 +31,29 @@
               </view>
           </label>
         </radio-group>
+
         <view class='weui-cell'>
           <view class='weui-cell__bd'>
             <textarea class='weui-textarea' name='desc' placeholder='描述' style='height: 3.3em'></textarea>
-            <view class='weui-textarea-counter'>0/200</view>
+            <view class='weui-textarea-counter'>50字以内</view>
           </view>
         </view>
         <view class='weui-cell'>
           <view class='weui-cell__bd'>
             <textarea class='weui-textarea' name='solution' placeholder='解决方案' style='height: 3.3em'></textarea>
-            <view class='weui-textarea-counter'>0/200</view>
+            <view class='weui-textarea-counter'>50字以内</view>
           </view>
         </view>
         <view class='weui-cell'>
           <view class='weui-cell__bd'>
             <textarea class='weui-textarea' name='business' placeholder='业务' style='height: 3.3em'></textarea>
-            <view class='weui-textarea-counter'>0/200</view>
+            <view class='weui-textarea-counter'>50字以内</view>
           </view>
         </view>
         <view class='weui-cell'>
           <view class='weui-cell__bd'>
             <textarea class='weui-textarea' name='relation' placeholder='供需关系' style='height: 3.3em'></textarea>
-            <view class='weui-textarea-counter'>0/200</view>
+            <view class='weui-textarea-counter'>50字以内</view>
           </view>
         </view>
       </view>

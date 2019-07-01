@@ -3,8 +3,7 @@ var common = require('../../common.js')
 import WxValidate from '../../utils/WxValidate.js'
 
 Page({
-      // {title: '武当派', code: 'sdfsdfsdffsfd',  expressAddress: '太华山', addressee: '张三丰', mobile: '151651654', mail: 'sdfsd@sdf.com', bankCode: '武林商业银行'},
-      // { title: '峨眉派', code: '48464864846', expressAddress: '昆仑山', addressee: '周芷若', mobile: '15164511651', mail: 'cdcdc@sdf.com', bankCode: '武林商业银行'}
+
   /**
    * 页面的初始数据
    */
@@ -51,9 +50,14 @@ Page({
             title: r.data[0].title,
             titleFlag: true
           })
+        } else if(r.code == -1) {
+          common.login(function () {
+            wx.showModal({
+              content: 'token已失效，已重新登录!',
+              showCancel: false
+            })
+          })
         }
-
-        console.log(that.data)
       }
     })
   },
@@ -157,16 +161,11 @@ Page({
       return false
     }
 
-    // for(var k in data.imageTitleArr) {
-    //   if(data.imageTitleArr[k].src == '') {
-    //     this.showModal({msg: '请上传图片'})
-    //     return false
-    //   }
-    // }
-      var flag = Math.random().toString(36).substr(2)
-      var token = wx.getStorageSync('token')
-      var i = 0
-      that.uploadFile(that,data,token,i,flag)
+
+    var flag = Math.random().toString(36).substr(2)
+    var token = wx.getStorageSync('token')
+    var i = 0
+    that.uploadFile(that,data,token,i,flag)
         
   },
   uploadFile: function(that,data,token,i,flag) {
@@ -193,11 +192,19 @@ Page({
         imgName: image.id
       },
       success(res) {
-        console.log(res)
-        if (++i < length) {
-          that.uploadFile(that,data,token,i,flag)
+        var r = JSON.parse(res.data)
+        if(r.code == -1) {
+          common.login(function () {
+            wx.showModal({
+              content: 'token已失效，已重新登录!',
+              showCancel: false
+            })
+          })
+        } else {
+          if (++i < length) {
+            that.uploadFile(that, data, token, i, flag)
+          }
         }
-
       }
     })
   },

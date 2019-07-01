@@ -41,13 +41,6 @@ Page({
         ico: '',
         fn: 'applyTicket'
       }
-      // , {
-      //   name: "个人中心",
-      //   current: 0,
-      //   style: 1,
-      //   ico: '',
-      //   fn: 'user'
-      // }
     ]
   },
   chooseImage: function(e) {
@@ -62,13 +55,9 @@ Page({
             imageArr[i].src = res.tempFilePaths[0]
           }
         }
-
-        // 限制最多只能留下3张照片
-        //that.data.images = images.length <= 3 ? images : images.slice(0, 3)
         that.setData({
           imageTitleArr: imageArr
         })
-        console.log(that.data)
       },
     })
   },
@@ -107,21 +96,30 @@ Page({
       },
       formData: data.form,
       success(res) {
-        console.log(res)
-        if (++i < length) {
-          that.uploadFile(that,data,token,i)
-        } else {
-          wx.showModal({
-            content: '申请提交成功',
-            showCancel: false,
-            success() {
-              wx.navigateTo({
-                url: '../index/index',
-              })  
-            }
+        var r = JSON.parse(res.data)
+        
+        if(r.code == -1) {
+          common.login(function () {
+            wx.showModal({
+              content: 'token已失效，已重新登录!',
+              showCancel: false
+            })
           })
+        } else {
+          if (++i < length) {
+            that.uploadFile(that, data, token, i)
+          } else {
+            wx.showModal({
+              content: '申请提交成功',
+              showCancel: false,
+              success() {
+                wx.navigateTo({
+                  url: '../index/index',
+                })
+              }
+            })
+          }
         }
-
       }
     })
   },
@@ -154,9 +152,7 @@ Page({
               tradeType: '',
               busRange: '',
               bankCard: r.data.bankCard,
-              // creditNo: r.data.creditNo,
             }
-            console.log(r.data)
             for (var k in that.data.imageTitleArr) {
               var index = that.data.imageTitleArr[k].id
               if (r.data.hasOwnProperty(index)) {       
@@ -168,7 +164,6 @@ Page({
               imageTitleArr: that.data.imageTitleArr,
               passportImage: r.data.passport
             })
-            console.log(that.data)
           }
         }
       }
@@ -249,10 +244,6 @@ Page({
         required: true,
         number: true
       },
-      creditNo: {
-        required: true,
-        rangelength: [10,20]
-      },
       bankCode: {
         required: true,
         rangelength: [4,10]
@@ -263,10 +254,6 @@ Page({
       bankCard: {
         required: '请输入银行卡号',
         rangelength: '请输入银行卡号'
-      },
-      creditNo: {
-        required: '请输入信用代码',
-        rangelength: ''
       },
       bankCode: {
         required: '请输入开户行',
@@ -298,12 +285,18 @@ Page({
       success: function(res) {
         var r = res.data
         if(r.code == 1) {
-          console.log(r)
           wx.setStorageSync('user_status', r.data.userStatus)
           that.setData({
             status: r.data.userStatus
           })
           that.onLoad()
+        } else if(r.code ==-1) {
+          common.login(function () {
+            wx.showModal({
+              content: 'token已失效，已重新登录!',
+              showCancel: false
+            })
+          })
         }
       }
     })
@@ -311,7 +304,6 @@ Page({
   applyUser: function () {
     common.checkLoginStatus(function () {
       var status = wx.getStorageSync('user_status')
-      console.log(status)
       var url = ''
       switch (status) {
         case 0:

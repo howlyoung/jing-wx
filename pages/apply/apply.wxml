@@ -21,16 +21,7 @@
           <view class='weui-cell__bd'>
             <input class="weui-input" id='bankCode' disabled="{{editStatus}}" bindinput="inputContent" value="{{form.bankCode}}" placeholder=''></input>
           </view>
-        </view>
-        <!-- <view class='weui-cell weui-cell_input'>
-          <view class='weui-cell__hd'>
-            <view class='weui-label'>社会信用代码</view>
-          </view>
-          <view class='weui-cell__bd'>
-            <input class="weui-input" id="creditNo" disabled="{{editStatus}}" bindinput="inputContent" value="{{form.creditNo}}" placeholder=''></input>
-          </view>
-        </view> -->
-        
+        </view>        
         <view class="weui-cell weui-cell" wx:for="{{imageTitleArr}}" wx:for-item="item">
           <view class='weui-label'>
             <button class='weui-btn' id='{{item.id}}' disabled="{{editStatus}}" size='mini' bindtap='chooseImage'>{{item.title}}</button>
@@ -46,14 +37,14 @@
         <button class='weui-btn' type='primary' bindtap='upload'>提交</button>
       </view>
       <view class="section" wx:if="{{status == 4 || status == 3}}">
-        <view class='weui-label'>
-          <button class='weui-btn' size='mini' bindtap='downloadPassport'>下载营业执照 </button>
-          <button class='weui-btn' wx:if="{{status == 4}}"  type='mini' bindtap='auth'>实名认证</button>
-        </view>
         <view class="weui-cell weui-cell">
           <block wx:if="{{passportImage != ''}}">
             <image src="{{passportImage}}" mode="aspectFill"  ></image>
           </block>
+        </view>
+        <view class='text_center'>
+          <button class='weui-btn ' size='mini' wx:if='{{passportImage != ""}}' bindtap='downloadPassport'>下载营业执照 </button>
+          <button class='weui-btn' wx:if="{{status == 4}}"  type='mini' bindtap='auth'>实名认证</button>
         </view>
       </view>
       <view class="empty-block"></view>
