@@ -1,6 +1,7 @@
 // pages/access/access.js
 var commom = require('../../common.js')
 import WxValidate from '../../utils/WxValidate.js'
+const app = getApp()
 Page({
 
   /**
@@ -21,7 +22,7 @@ Page({
     }
     var token = wx.getStorageSync('token')
     wx.request({
-      url: 'http://local.cp.com/index.php?r=jing-access/create&token='+token,
+      url: app.globalData.URL + 'index.php?r=jing-access/create&token='+token,
       data: {
         name: data.name,
         mobile: data.mobile,
@@ -29,7 +30,9 @@ Page({
         desc: data.desc,
         solution: data.solution,
         business: data.business,
-        relation: data.relation
+        relation: data.relation,
+        extend: data.extend,
+        extendChannel: data.extendChannel
       },
       header: { 'content-type': 'application/x-www-form-urlencoded'},
       method: "POST",
@@ -132,24 +135,24 @@ Page({
     const rules = {
       name: {
         required: true,
-        rangelength: [2,4]
+        rangelength: [1,20]
       },
       mobile: {
         required: true,
         tel: true
       },
-      solution: {
-        required: true,
-        rangelength: [10, 50]
-      },
-      business: {
-        required: true,
-        rangelength: [10, 50]
-      },
-      relation: {
-        required: true,
-        rangelength: [10, 50]
-      }
+      // solution: {
+      //   required: true,
+      //   rangelength: [10, 50]
+      // },
+      // business: {
+      //   required: true,
+      //   rangelength: [10, 50]
+      // },
+      // relation: {
+      //   required: true,
+      //   rangelength: [10, 50]
+      // }
     }
 
     const messages = {

@@ -1,9 +1,11 @@
+const app = getApp()
+
 function login(e) {
   wx.login({
     success(res) {
       if (res.code) {
         wx.request({
-          url: 'http://local.cp.com/index.php?r=jing/login',
+          url: app.globalData.URL + 'index.php?r=jing/login',
           data: {
             code: res.code
           },
@@ -30,7 +32,7 @@ function login(e) {
 function checkLoginStatus(e='') {
   var token = wx.getStorageSync('token')
   wx.request({
-    url: 'http://local.cp.com/index.php?r=jing/check-status',
+    url: app.globalData.URL + 'index.php?r=jing/check-status',
     data: {
       token: token
     },

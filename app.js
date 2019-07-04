@@ -34,6 +34,8 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    // URL: 'https://www.chinadim.com/jing/web/'
+    URL: 'http://local.cp.com/'
   }
 })

@@ -1,6 +1,7 @@
 // pages/apply/apply.js
 import WxValidate from '../../utils/WxValidate.js'
 var common = require('../../common.js')
+const app = getApp()
 Page({
 
   /**
@@ -41,7 +42,12 @@ Page({
         ico: '',
         fn: 'applyTicket'
       }
-    ]
+    ],
+    personName: '',
+    busRange: '',
+    busType: '',
+    ticketContent: '',
+    ticketType: ''
   },
   chooseImage: function(e) {
     var that = this
@@ -88,7 +94,7 @@ Page({
     var image = data.imageTitleArr[i]
     data.form.imgName = image.id
     wx.uploadFile({
-      url: 'http://local.cp.com/index.php?r=jing-apply/create&token=' + token,
+      url: app.globalData.URL + 'index.php?r=jing-apply/create&token=' + token,
       filePath: image.src,
       name: 'imageFile',
       header: {
@@ -134,14 +140,14 @@ Page({
     that.setData({
       status: status
     })
-    if(status == 4 || status == 3) {
+    if(status == 4 || status == 3 || status == 5) {
       that.setData({
         editStatus: true
       })
     }
 
     wx.request({
-      url: 'http://local.cp.com/index.php?r=jing-apply/get-apply&token=' + token,
+      url: app.globalData.URL + 'index.php?r=jing-apply/get-apply&token=' + token,
       success: function(res) {
         var r = res.data
         if(r.code == 1) {
@@ -152,6 +158,7 @@ Page({
               tradeType: '',
               busRange: '',
               bankCard: r.data.bankCard,
+              bankCode: r.data.bankCode
             }
             for (var k in that.data.imageTitleArr) {
               var index = that.data.imageTitleArr[k].id
@@ -162,7 +169,12 @@ Page({
             that.setData({
               form: form,
               imageTitleArr: that.data.imageTitleArr,
-              passportImage: r.data.passport
+              passportImage: r.data.passport,
+              ticketContent: r.data.ticketContent,
+              ticketType: r.data.ticketType,
+              busRange: r.data.busRange,
+              busType: r.data.busType,
+              personName: r.data.personName
             })
           }
         }
@@ -243,10 +255,6 @@ Page({
       bankCard: {
         required: true,
         number: true
-      },
-      bankCode: {
-        required: true,
-        rangelength: [4,10]
       }
     }
 
@@ -273,7 +281,14 @@ Page({
     wx.downloadFile({
       url: that.data.passportImage,
       success (res) {
-        console.log(res)
+        if(res.statusCode ==  200) {
+          wx.saveImageToPhotosAlbum({
+            filePath: res.tempFilePath,
+            success: function(result) {
+              console.log(result)
+            }
+          })
+        }
       }
     })
   },
@@ -281,7 +296,7 @@ Page({
     var token = wx.getStorageSync('token')
     var that = this
     wx.request({
-      url: 'http://local.cp.com/index.php?r=jing/auth&token=' + token,
+      url: app.globalData.URL + 'index.php?r=jing/auth&token=' + token,
       success: function(res) {
         var r = res.data
         if(r.code == 1) {

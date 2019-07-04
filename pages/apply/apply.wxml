@@ -8,6 +8,46 @@
       <view class="weui-cells weui-cells_after-title">
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
+            <view class='weui-label'>发票内容</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <textarea class='weui-textarea' disabled="true" disabled="true" style='height: 3.3em'>{{ticketContent}}</textarea>
+          </view>
+        </view>
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>发票类型</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input"  disabled="true"  value="{{ticketType}}"></input>
+          </view>
+        </view>
+                <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>个体户名称</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input"  disabled="true"  value="{{personName}}"></input>
+          </view>
+        </view>
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>经营范围</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <textarea class='weui-textarea' disabled="true" style='height: 3.3em'>{{busRange}}</textarea>
+          </view>
+        </view>
+                <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>行业类别</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <textarea class='weui-textarea' disabled="true" style='height: 3.3em'>{{busType}}</textarea>
+          </view>
+        </view>
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
             <view class='weui-label'>银行卡号</view>
           </view>
           <view class='weui-cell__bd'>
@@ -36,7 +76,7 @@
       <view class="section" wx:if="{{!editStatus}}">
         <button class='weui-btn' type='primary' bindtap='upload'>提交</button>
       </view>
-      <view class="section" wx:if="{{status == 4 || status == 3}}">
+      <view class="section" wx:if="{{status == 4 || status == 3 || status == 5}}">
         <view class="weui-cell weui-cell">
           <block wx:if="{{passportImage != ''}}">
             <image src="{{passportImage}}" mode="aspectFill"  ></image>

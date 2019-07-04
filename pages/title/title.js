@@ -1,4 +1,6 @@
 // pages/title/title.js
+const app = getApp()
+
 Page({
 
   /**
@@ -74,7 +76,7 @@ Page({
     var data = e.detail.value
     var token = wx.getStorageSync('token')
     wx.request({
-      url: 'http://local.cp.com/index.php?r=jing-ticket/create-title&token=' + token,
+      url: app.globalData.URL + 'index.php?r=jing-ticket/create-title&token=' + token,
       data: {
         title: data.title,
         code: data.code,

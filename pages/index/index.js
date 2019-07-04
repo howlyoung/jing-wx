@@ -58,6 +58,30 @@ Page({
       that.setData({
         status: status
       })
+      var url = ''
+      switch (status) {
+        case 0:
+          url = '../access/access'
+          break
+        case 1:
+        case 3:
+          url = ''
+          break
+        case 2:
+        case 4:
+        case 5:
+          url = '../apply/apply'
+          break
+        default:
+          url = ''
+          break
+      }
+      if(url != '') {
+        wx.navigateTo({
+          url: url,
+        })
+      }
+
     })
   },
   getUserInfo: function(e) {

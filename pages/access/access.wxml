@@ -7,7 +7,7 @@
       <view class="weui-cells weui-cells_after-title">
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>用户名</view>
+            <view class='weui-label'>用户名<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name="name" placeholder=''></input>
@@ -15,7 +15,7 @@
         </view>
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>手机号</view>
+            <view class='weui-label'>手机号码<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name="mobile" placeholder=''></input>
@@ -34,26 +34,42 @@
 
         <view class='weui-cell'>
           <view class='weui-cell__bd'>
-            <textarea class='weui-textarea' name='desc' placeholder='描述' style='height: 3.3em'></textarea>
+            <textarea class='weui-textarea' name='desc' placeholder='遇到什么问题' style='height: 3.3em'></textarea>
             <view class='weui-textarea-counter'>50字以内</view>
           </view>
         </view>
         <view class='weui-cell'>
           <view class='weui-cell__bd'>
-            <textarea class='weui-textarea' name='solution' placeholder='解决方案' style='height: 3.3em'></textarea>
+            <textarea class='weui-textarea' name='solution' placeholder='如何解决的' style='height: 3.3em'></textarea>
             <view class='weui-textarea-counter'>50字以内</view>
           </view>
         </view>
         <view class='weui-cell'>
           <view class='weui-cell__bd'>
-            <textarea class='weui-textarea' name='business' placeholder='业务' style='height: 3.3em'></textarea>
+            <textarea class='weui-textarea' name='business' placeholder='主要业务' style='height: 3.3em'></textarea>
             <view class='weui-textarea-counter'>50字以内</view>
           </view>
         </view>
         <view class='weui-cell'>
           <view class='weui-cell__bd'>
-            <textarea class='weui-textarea' name='relation' placeholder='供需关系' style='height: 3.3em'></textarea>
+            <textarea class='weui-textarea' name='relation' placeholder='与客户之间的关系' style='height: 3.3em'></textarea>
             <view class='weui-textarea-counter'>50字以内</view>
+          </view>
+        </view>
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>推荐人</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name="extend" placeholder=''></input>
+          </view>
+        </view>
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>推广渠道</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name="extendChannel" placeholder=''></input>
           </view>
         </view>
       </view>

@@ -1,7 +1,7 @@
 // pages/ticket/ticket.js
 var common = require('../../common.js')
 import WxValidate from '../../utils/WxValidate.js'
-
+const app = getApp()
 Page({
 
   /**
@@ -34,7 +34,7 @@ Page({
     var token = wx.getStorageSync('token')
     var that = this
     wx.request({
-      url: 'http://local.cp.com/index.php?r=jing-ticket/get-title&token=' + token,
+      url: app.globalData.URL + 'index.php?r=jing-ticket/get-title&token=' + token,
       success: function (res) {
         var r = res.data
          console.log(r)
@@ -173,7 +173,7 @@ Page({
 
     var image = data.imageTitleArr[i]
     wx.uploadFile({
-      url: 'http://local.cp.com/index.php?r=jing-ticket/create&token=' + token,
+      url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
       filePath: image.src,
       name: 'imageFile',
       header: {
@@ -203,6 +203,16 @@ Page({
         } else {
           if (++i < length) {
             that.uploadFile(that, data, token, i, flag)
+          } else {
+            wx.showModal({
+              content: '申请提交成功',
+              showCancel: false,
+              success() {
+                wx.navigateTo({
+                  url: '../index/index',
+                })
+              }
+            })
           }
         }
       }
@@ -268,11 +278,15 @@ Page({
     const rules = {
       title: {
         required: true,
-        rangelength: [5, 20]
+        rangelength: [1, 20]
       },
       code: {
         required: true,
         rangelength: [10, 20]
+      },
+      amount: {
+        required: true,
+        number: true
       }
     }
 
@@ -283,6 +297,10 @@ Page({
       },
       code: {
         required: '请输入识别号',
+        rangelength: ''
+      },
+      amount: {
+        required: '请输入开票金额',
         rangelength: ''
       }
     }
