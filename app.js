@@ -37,5 +37,6 @@ App({
     userInfo: null,
     // URL: 'https://www.chinadim.com/jing/web/'
     URL: 'http://local.cp.com/'
+    // URL: 'https://www.yelanghao.cn/'
   }
 })
