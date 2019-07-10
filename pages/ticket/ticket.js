@@ -155,7 +155,7 @@ Page({
       var that = this
       var data = this.data
 
-    if (!this.WxValidate.checkForm({title:data.title,code:data.code})) {
+    if (!this.WxValidate.checkForm({title:data.title,code:data.code,amount:data.amount})) {
       const error = this.WxValidate.errorList[0]
       this.showModal(error)
       return false
@@ -164,15 +164,37 @@ Page({
 
     var flag = Math.random().toString(36).substr(2)
     var token = wx.getStorageSync('token')
-    var i = 0
-    that.uploadFile(that,data,token,i,flag)
-        
+    wx.request({
+      url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        flag: flag,
+        title: data.title,
+        amount: data.amount,
+        code: data.code,
+        expressAddress: data.expressAddress,
+        addressee: data.addressee,
+        mobile: data.mobile,
+        mail: data.mail,
+        bank: data.bankCode,
+      },
+      success: function(res) {
+        if(res.data.code == 1) {
+          var i = 0
+          that.uploadFile(that, data, token, i, flag)
+        }
+      }
+    })
   },
   uploadFile: function(that,data,token,i,flag) {
     var length = data.imageTitleArr.length
 
     var image = data.imageTitleArr[i]
     for (var k = 0; k < image.src.length; k++) {
+      console.log(flag)
       wx.uploadFile({
         url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
         filePath: image.src[k],
@@ -182,14 +204,6 @@ Page({
         },
         formData: {
           flag: flag,
-          title: data.title,
-          amount: data.amount,
-          code: data.code,
-          expressAddress: data.expressAddress,
-          addressee: data.addressee,
-          mobile: data.mobile,
-          mail: data.mail,
-          bank: data.bankCode,
           imgName: image.id
         },
         success(res) {
@@ -201,19 +215,13 @@ Page({
                 showCancel: false
               })
             })
-          } else {
-            if (++i < length) {
-              that.uploadFile(that, data, token, i, flag)
-            } else {
-
-            }
           }
         }
       })
     }
 
     if (++i < length) {
-      that.uploadFile(that, data, token, i)
+      that.uploadFile(that, data, token, i, flag)
     } else {
       wx.showModal({
         content: '申请提交成功',
@@ -226,51 +234,6 @@ Page({
       })
     }
 
-    // wx.uploadFile({
-    //   url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
-    //   filePath: image.src,
-    //   name: 'imageFile',
-    //   header: {
-    //     'content-type': 'multipart/form-data'
-    //   },
-    //   formData: {
-    //     flag: flag,
-    //     title: data.title,
-    //     amount: data.amount,
-    //     code: data.code,
-    //     expressAddress: data.expressAddress,
-    //     addressee: data.addressee,
-    //     mobile: data.mobile,
-    //     mail: data.mail,
-    //     bank: data.bankCode,
-    //     imgName: image.id
-    //   },
-    //   success(res) {
-    //     var r = JSON.parse(res.data)
-    //     if(r.code == -1) {
-    //       common.login(function () {
-    //         wx.showModal({
-    //           content: 'token已失效，已重新登录!',
-    //           showCancel: false
-    //         })
-    //       })
-    //     } else {
-    //       if (++i < length) {
-    //         that.uploadFile(that, data, token, i, flag)
-    //       } else {
-    //         wx.showModal({
-    //           content: '申请提交成功',
-    //           showCancel: false,
-    //           success() {
-    //             wx.navigateTo({
-    //               url: '../index/index',
-    //             })
-    //           }
-    //         })
-    //       }
-    //     }
-    //   }
-    // })
   },
   inputContent: function (input) {
     var key = input.currentTarget.id
