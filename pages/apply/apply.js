@@ -47,7 +47,8 @@ Page({
     busRange: '',
     busType: '',
     ticketContent: '',
-    ticketType: ''
+    ticketType: '',
+    host: ''
   },
   chooseImage: function(e) {
     var that = this
@@ -56,9 +57,10 @@ Page({
     wx.chooseImage({
       success: function(res) {
         var imageArr = that.data.imageTitleArr
+  
         for (var i in imageArr) {
           if (imageArr[i].id == id) {
-            imageArr[i].src = res.tempFilePaths[0]
+            imageArr[i].src = res.tempFilePaths
           }
         }
         that.setData({
@@ -68,8 +70,9 @@ Page({
     })
   },
   upload: function() {
-      var that = this
-      var data = this.data
+    var that = this
+    var data = this.data
+      
 
     if (!this.WxValidate.checkForm(data.form)) {
       const error = this.WxValidate.errorList[0]
@@ -83,51 +86,106 @@ Page({
         return false
       }
     }
-      var token = wx.getStorageSync('token')
-      var i = 0
-      that.uploadFile(that,data,token,i)
+
+    var token = wx.getStorageSync('token')
+    var i = 0
+
+    wx.request({
+      url: app.globalData.URL + 'index.php?r=jing-apply/create&token=' + token,
+      data: data.form,
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      success:function() {
+        console.log('success')
+      }
+    })
+
+    that.uploadFile(that,data,token,i)
         
   },
   uploadFile: function(that,data,token,i) {
     var length = data.imageTitleArr.length
 
     var image = data.imageTitleArr[i]
+
     data.form.imgName = image.id
-    wx.uploadFile({
-      url: app.globalData.URL + 'index.php?r=jing-apply/create&token=' + token,
-      filePath: image.src,
-      name: 'imageFile',
-      header: {
-        'content-type': 'multipart/form-data'
-      },
-      formData: data.form,
-      success(res) {
-        var r = JSON.parse(res.data)
-        
-        if(r.code == -1) {
-          common.login(function () {
-            wx.showModal({
-              content: 'token已失效，已重新登录!',
-              showCancel: false
+    for (var k=0;k<image.src.length;k++) {
+      wx.uploadFile({
+        url: app.globalData.URL + 'index.php?r=jing-apply/create&token=' + token,
+        filePath: image.src[k],
+        name: 'imageFile',
+        header: {
+          'content-type': 'multipart/form-data'
+        },
+        formData: data.form,
+        success(res) {
+          var r = JSON.parse(res.data)
+          console.log(k)
+          if (r.code == -1) {
+            common.login(function () {
+              wx.showModal({
+                content: 'token已失效，已重新登录!',
+                showCancel: false
+              })
             })
-          })
-        } else {
-          if (++i < length) {
-            that.uploadFile(that, data, token, i)
           } else {
-            wx.showModal({
-              content: '申请提交成功',
-              showCancel: false,
-              success() {
-                wx.navigateTo({
-                  url: '../index/index',
-                })
-              }
-            })
+            console.log('success upload')
           }
         }
-      }
-    })
+      })
+    }
+
+    if (++i < length) {
+      that.uploadFile(that, data, token, i)
+    } else {
+      wx.showModal({
+        content: '申请提交成功',
+        showCancel: false,
+        success() {
+          wx.navigateTo({
+            url: '../index/index',
+          })
+        }
+      })
+    }
+
+    // wx.uploadFile({
+    //   url: app.globalData.URL + 'index.php?r=jing-apply/create&token=' + token,
+    //   filePath: image.src,
+    //   name: 'imageFile',
+    //   header: {
+    //     'content-type': 'multipart/form-data'
+    //   },
+    //   formData: data.form,
+    //   success(res) {
+    //     var r = JSON.parse(res.data)
+        
+    //     if(r.code == -1) {
+    //       common.login(function () {
+    //         wx.showModal({
+    //           content: 'token已失效，已重新登录!',
+    //           showCancel: false
+    //         })
+    //       })
+    //     } else {
+    //       if (++i < length) {
+    //         that.uploadFile(that, data, token, i)
+    //       } else {
+    //         wx.showModal({
+    //           content: '申请提交成功',
+    //           showCancel: false,
+    //           success() {
+    //             wx.navigateTo({
+    //               url: '../index/index',
+    //             })
+    //           }
+    //         })
+    //       }
+    //     }
+    //   }
+    // })
   },
   /**
    * 生命周期函数--监听页面加载
@@ -174,7 +232,8 @@ Page({
               ticketType: r.data.ticketType,
               busRange: r.data.busRange,
               busType: r.data.busType,
-              personName: r.data.personName
+              personName: r.data.personName,
+              host: r.data.hostInfo
             })
           }
         }
@@ -286,6 +345,37 @@ Page({
             filePath: res.tempFilePath,
             success: function(result) {
               console.log(result)
+            }
+          })
+        }
+      }
+    })
+  },
+  delImage: function(e) {
+    var that = this
+    var imgId = e.currentTarget.dataset.id
+    var token = wx.getStorageSync('token')
+    wx.showModal({
+      title: '删除图片',
+      content: '是否删除图片',
+      success: function(res) {
+        if(res.confirm) {
+          wx.request({
+            url: app.globalData.URL + 'index.php?r=jing-apply/del-image&token=' + token,
+            data: {id: imgId},
+            success:function(res) {
+              if(res.data.code == 1) {
+                wx.showModal({
+                  title: '成功',
+                  content: '操作成功',
+                  showCancel:false,
+                  success: function(r) {
+                    if(r.confirm) {
+                      that.onLoad()
+                    }
+                  }
+                })
+              }
             }
           })
         }

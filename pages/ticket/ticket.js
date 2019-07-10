@@ -138,7 +138,7 @@ Page({
         var imageArr = that.data.imageTitleArr
         for (var i in imageArr) {
           if (imageArr[i].id == id) {
-            imageArr[i].src = res.tempFilePaths[0]
+            imageArr[i].src = res.tempFilePaths
           }
         }
 
@@ -172,51 +172,105 @@ Page({
     var length = data.imageTitleArr.length
 
     var image = data.imageTitleArr[i]
-    wx.uploadFile({
-      url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
-      filePath: image.src,
-      name: 'imageFile',
-      header: {
-        'content-type': 'multipart/form-data'
-      },
-      formData: {
-        flag: flag,
-        title: data.title,
-        amount: data.amount,
-        code: data.code,
-        expressAddress: data.expressAddress,
-        addressee: data.addressee,
-        mobile: data.mobile,
-        mail: data.mail,
-        bank: data.bankCode,
-        imgName: image.id
-      },
-      success(res) {
-        var r = JSON.parse(res.data)
-        if(r.code == -1) {
-          common.login(function () {
-            wx.showModal({
-              content: 'token已失效，已重新登录!',
-              showCancel: false
+    for (var k = 0; k < image.src.length; k++) {
+      wx.uploadFile({
+        url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
+        filePath: image.src[k],
+        name: 'imageFile',
+        header: {
+          'content-type': 'multipart/form-data'
+        },
+        formData: {
+          flag: flag,
+          title: data.title,
+          amount: data.amount,
+          code: data.code,
+          expressAddress: data.expressAddress,
+          addressee: data.addressee,
+          mobile: data.mobile,
+          mail: data.mail,
+          bank: data.bankCode,
+          imgName: image.id
+        },
+        success(res) {
+          var r = JSON.parse(res.data)
+          if (r.code == -1) {
+            common.login(function () {
+              wx.showModal({
+                content: 'token已失效，已重新登录!',
+                showCancel: false
+              })
             })
-          })
-        } else {
-          if (++i < length) {
-            that.uploadFile(that, data, token, i, flag)
           } else {
-            wx.showModal({
-              content: '申请提交成功',
-              showCancel: false,
-              success() {
-                wx.navigateTo({
-                  url: '../index/index',
-                })
-              }
-            })
+            if (++i < length) {
+              that.uploadFile(that, data, token, i, flag)
+            } else {
+
+            }
           }
         }
-      }
-    })
+      })
+    }
+
+    if (++i < length) {
+      that.uploadFile(that, data, token, i)
+    } else {
+      wx.showModal({
+        content: '申请提交成功',
+        showCancel: false,
+        success() {
+          wx.navigateTo({
+            url: '../index/index',
+          })
+        }
+      })
+    }
+
+    // wx.uploadFile({
+    //   url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
+    //   filePath: image.src,
+    //   name: 'imageFile',
+    //   header: {
+    //     'content-type': 'multipart/form-data'
+    //   },
+    //   formData: {
+    //     flag: flag,
+    //     title: data.title,
+    //     amount: data.amount,
+    //     code: data.code,
+    //     expressAddress: data.expressAddress,
+    //     addressee: data.addressee,
+    //     mobile: data.mobile,
+    //     mail: data.mail,
+    //     bank: data.bankCode,
+    //     imgName: image.id
+    //   },
+    //   success(res) {
+    //     var r = JSON.parse(res.data)
+    //     if(r.code == -1) {
+    //       common.login(function () {
+    //         wx.showModal({
+    //           content: 'token已失效，已重新登录!',
+    //           showCancel: false
+    //         })
+    //       })
+    //     } else {
+    //       if (++i < length) {
+    //         that.uploadFile(that, data, token, i, flag)
+    //       } else {
+    //         wx.showModal({
+    //           content: '申请提交成功',
+    //           showCancel: false,
+    //           success() {
+    //             wx.navigateTo({
+    //               url: '../index/index',
+    //             })
+    //           }
+    //         })
+    //       }
+    //     }
+    //   }
+    // })
   },
   inputContent: function (input) {
     var key = input.currentTarget.id

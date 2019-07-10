@@ -67,8 +67,8 @@
             <button class='weui-btn' id='{{item.id}}' disabled="{{editStatus}}" size='mini' bindtap='chooseImage'>{{item.title}}</button>
           </view>
           <view class="weui-cell weui-cell">
-            <block wx:if="{{item.src != ''}}">
-              <image class="thumb-image" src="{{item.src}}" mode="aspectFill"  ></image>
+            <block wx:if="{{item.src != ''}}" wx:for="{{item.src}}" wx:for-item="imgItem">
+              <image class="thumb-image" src="{{host + imgItem}}" mode="aspectFill" data-id="{{index}}" bindlongtap="delImage" ></image>
             </block>
           </view>
         </view>
