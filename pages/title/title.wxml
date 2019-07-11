@@ -21,6 +21,44 @@
             <input class="weui-input" name='code' placeholder='纳税人识别号' value='{{code}}'></input>
           </view>
         </view>
+
+<view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>开户行</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='bankCode' value='{{bankCode}}' placeholder=''></input>
+          </view>
+        </view> 
+
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>银行账号</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='bankCard' value='{{bankCard}}' placeholder=''></input>
+          </view>
+        </view>  
+
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>开票地址</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='companyAddress' value='{{companyAddress}}' placeholder=''></input>
+          </view>
+        </view>
+
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>公司电话</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='companyTel' value='{{companyTel}}' placeholder=''></input>
+          </view>
+        </view>
+
+
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
             <view class='weui-label'>邮箱</view>
@@ -53,14 +91,9 @@
             <input class="weui-input" name='mobile' value='{{mobile}}' placeholder=''></input>
           </view>
         </view>
-        <view class='weui-cell weui-cell_input'>
-          <view class='weui-cell__hd'>
-            <view class='weui-label'>开户行</view>
-          </view>
-          <view class='weui-cell__bd'>
-            <input class="weui-input" name='bankCode' value='{{bankCode}}' placeholder=''></input>
-          </view>
-        </view>         
+
+        
+
       </view>
       <view class="section">
         <button class='weui-btn' type='primary' form-type="submit">提交</button>

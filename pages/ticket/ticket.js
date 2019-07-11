@@ -12,8 +12,10 @@ Page({
     ],
     imageTitleArr: [
       { id: 'serviceBill', title: '税款凭证', src: '' },
-      { id: 'amountBill', title: '打款凭证', src: '' }
+      { id: 'amountBill', title: '公司向个体工商户打款凭证', src: '' },
+      { id: 'agreement', title: '公司与个体工商户合作协议', src: '' },
     ],
+    personName: '',
     title: '',
     titleFlag: false,
     index: 0,
@@ -22,8 +24,16 @@ Page({
     addressee: '',
     mobile: '',
     mail: '',
-    bank: '',
-    amount: ''
+    amount: '',
+    bankCode: '',
+    bankCard: '',
+    companyAddress: '',
+    companyTel: '',
+    radioItems: [
+      { name: '普票', value: 0, key: 0 },
+      { name: '专票', value: 1, key: 1 }
+    ],
+    ticketType: ''
   },
 
   /**
@@ -37,7 +47,6 @@ Page({
       url: app.globalData.URL + 'index.php?r=jing-ticket/get-title&token=' + token,
       success: function (res) {
         var r = res.data
-         console.log(r)
         if (r.code == 1 && r.data.length != 0) {
           that.setData({
             ticket: r.data,
@@ -46,9 +55,12 @@ Page({
             addressee: r.data[0].addressee,
             mobile: r.data[0].mobile,
             mail: r.data[0].mail,
-            bank: r.data[0].bankCode,
             title: r.data[0].title,
-            titleFlag: true
+            titleFlag: true,
+            bankCode: r.data[0].bankCode,
+            bankCard: r.data[0].bankCard,
+            companyAddress: r.data[0].companyAddress,
+            companyTel: r.data[0].companyTel
           })
         } else if(r.code == -1) {
           common.login(function () {
@@ -65,14 +77,19 @@ Page({
     var index = e.detail.value
     var data = this.data.ticket[index]
     this.setData({
+      index: index,
+      title: data.title,
       code : data.code,
       expressAddress: data.expressAddress,
       addressee: data.addressee,
       mobile: data.mobile,
       mail: data.mail,
-      bank: data.bankCode,
+      bankCode: data.bankCode,
       title: data.title,
-      titleFlag: true
+      titleFlag: true,
+      bankCard: data.bankCard,
+      companyAddress: data.companyAddress,
+      companyTel: data.companyTel
     })
   },
   /**
@@ -155,7 +172,7 @@ Page({
       var that = this
       var data = this.data
 
-    if (!this.WxValidate.checkForm({title:data.title,code:data.code,amount:data.amount})) {
+    if (!this.WxValidate.checkForm({ title: data.title, code: data.code, amount: data.amount, ticketType: data.ticketType, personName: data.personName})) {
       const error = this.WxValidate.errorList[0]
       this.showModal(error)
       return false
@@ -179,7 +196,12 @@ Page({
         addressee: data.addressee,
         mobile: data.mobile,
         mail: data.mail,
-        bank: data.bankCode,
+        bankCode: data.bankCode,
+        bankCard: data.bankCard,
+        ticketType: data.ticketType,
+        companyAddress: data.companyAddress,
+        companyTel: data.companyTel,
+        personName: data.personName
       },
       success: function(res) {
         if(res.data.code == 1) {
@@ -234,6 +256,11 @@ Page({
       })
     }
 
+  },
+  radioChange: function(res) {
+    this.setData({
+      ticketType: res.detail.value
+    })
   },
   inputContent: function (input) {
     var key = input.currentTarget.id
@@ -295,15 +322,21 @@ Page({
     const rules = {
       title: {
         required: true,
-        rangelength: [1, 20]
+        rangelength: [1, 200]
       },
       code: {
         required: true,
-        rangelength: [10, 20]
+        rangelength: [10, 200]
       },
       amount: {
         required: true,
         number: true
+      },
+      ticketType: {
+        required: true
+      },
+      personName: {
+        required: true
       }
     }
 
@@ -319,6 +352,12 @@ Page({
       amount: {
         required: '请输入开票金额',
         rangelength: ''
+      },
+      ticketType: {
+        required: '请选择发票类型'
+      },
+      personName: {
+        required: '请填写个人工商户'
       }
     }
     this.WxValidate = new WxValidate(rules, messages)

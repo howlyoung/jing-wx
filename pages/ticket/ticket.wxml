@@ -7,6 +7,14 @@
       <view class="weui-cells weui-cells_after-title">
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
+            <view class='weui-label'>个体工商户名称</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='personName' id="personName" bindinput="inputContent" placeholder='' value='{{personName}}'></input>
+          </view>
+        </view>
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
             <view class='weui-label'>抬头</view>
           </view>
           <view class='weui-cell__bd'>
@@ -22,7 +30,7 @@
             <view class='weui-label'>识别号</view>
           </view>
           <view class='weui-cell__bd'>
-            <input class="weui-input" name='code' placeholder='纳税人识别号' value='{{code}}'></input>
+            <input class="weui-input" name='code' id="code" bindinput="inputContent" value='{{code}}'></input>
           </view>
         </view>
         <view class='weui-cell weui-cell_input'>
@@ -35,18 +43,10 @@
         </view>
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>开户行</view>
-          </view>
-          <view class='weui-cell__bd'>
-            <input class="weui-input" name='bank' value='{{bank}}' placeholder=''></input>
-          </view>
-        </view>
-        <view class='weui-cell weui-cell_input'>
-          <view class='weui-cell__hd'>
             <view class='weui-label'>邮箱</view>
           </view>
           <view class='weui-cell__bd'>
-            <input class="weui-input" name='mail' value='{{mail}}' placeholder=''></input>
+            <input class="weui-input" name='mail' value='{{mail}}'  id="mail" bindinput="inputContent" placeholder=''></input>
           </view>
         </view>
         <view class='weui-cell weui-cell_input'>
@@ -54,7 +54,7 @@
             <view class='weui-label'>快递地址</view>
           </view>
           <view class='weui-cell__bd'>
-            <input class="weui-input" name='expressAddress' value='{{expressAddress}}' placeholder=''></input>
+            <input class="weui-input" name='expressAddress' id="expressAddress" bindinput="inputContent" value='{{expressAddress}}' placeholder=''></input>
           </view>
         </view>
         <view class='weui-cell weui-cell_input'>
@@ -62,7 +62,7 @@
             <view class='weui-label'>收件人</view>
           </view>
           <view class='weui-cell__bd'>
-            <input class="weui-input" name='addressee' value='{{addressee}}' placeholder=''></input>
+            <input class="weui-input" name='addressee' id="addressee" bindinput="inputContent" value='{{addressee}}' placeholder=''></input>
           </view>
         </view>
         <view class='weui-cell weui-cell_input'>
@@ -70,10 +70,48 @@
             <view class='weui-label'>联系电话</view>
           </view>
           <view class='weui-cell__bd'>
-            <input class="weui-input" name='mobile' value='{{mobile}}' placeholder=''></input>
+            <input class="weui-input" name='mobile' id="mobile" bindinput="inputContent" value='{{mobile}}' placeholder=''></input>
           </view>
         </view>
-        <radio-group bindchange="radioChange" name="type">
+
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>开户行</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='bankCode' id="bankCode" bindinput="inputContent" value='{{bankCode}}' placeholder=''></input>
+          </view>
+        </view> 
+
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>银行账号</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='bankCard' id="bankCard" bindinput="inputContent" value='{{bankCard}}' placeholder=''></input>
+          </view>
+        </view>  
+
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>开票地址</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='companyAddress' id="companyAddress" bindinput="inputContent" value='{{companyAddress}}' placeholder=''></input>
+          </view>
+        </view>
+
+        <view class='weui-cell weui-cell_input'>
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>公司电话</view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='companyTel' id="companyTel" bindinput="inputContent" value='{{companyTel}}' placeholder=''></input>
+          </view>
+        </view>
+
+
+        <radio-group bindchange="radioChange" name="ticketType">
           <label class="weui-cell weui-check__label" wx:for="{{radioItems}}" wx:key="index">
             <radio data-id="{{item.key}}" value="{{item.value}}" checked="{{item.checked}}" />
               <view class="weui-cell__bd">{{item.name}}</view>
@@ -82,6 +120,7 @@
               </view>
           </label>
         </radio-group>
+
         <view class='weui-cell weui-cell'>
           <view class='weui-label'>
             <button class='weui-btn'  size='mini' bindtap='addTitle'>新增抬头</button>
@@ -92,8 +131,8 @@
             <button class='weui-btn' id='{{item.id}}' size='mini' bindtap='chooseImage'>{{item.title}}</button>
           </view>
           <view class="weui-cell weui-cell">
-            <block wx:if="{{item.src != ''}}">
-              <image src="{{item.src}}" mode="aspectFill"  bindtap="handleImagePreview"></image>
+            <block wx:if="{{item.src != ''}}" wx:for="{{item.src}}" wx:for-item="imgItem">
+              <image src="{{imgItem}}" mode="aspectFill"  bindtap="handleImagePreview"></image>
             </block>
           </view>
         </view>

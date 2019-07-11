@@ -68,7 +68,7 @@
           </view>
           <view class="weui-cell weui-cell">
             <block wx:if="{{item.src != ''}}" wx:for="{{item.src}}" wx:for-item="imgItem">
-              <image class="thumb-image" src="{{host + imgItem}}" mode="aspectFill" data-id="{{index}}" bindlongtap="delImage" ></image>
+              <image class="thumb-image" src="{{imgItem}}" mode="aspectFill" data-id="{{index}}" bindlongtap="delImage" ></image>
             </block>
           </view>
         </view>

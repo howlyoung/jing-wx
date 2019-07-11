@@ -13,7 +13,10 @@ Page({
     addressee: '',
     mobile: '',
     mail: '',
-    bankCode: ''
+    bankCode: '',
+    bankCard: '',
+    companyAddress: '',
+    companyTel: ''
   },
 
   /**
@@ -84,7 +87,10 @@ Page({
         address: data.address,
         addressee: data.addressee,
         mobile: data.mobile,
-        bankCode: data.bankCode
+        bankCode: data.bankCode,
+        bankCard: data.bankCard,
+        companyAddress: data.companyAddress,
+        companyTel: data.companyTel
       },
       header: { 'content-type': 'application/x-www-form-urlencoded' },
       method: "POST",

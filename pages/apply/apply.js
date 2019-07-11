@@ -352,6 +352,9 @@ Page({
     })
   },
   delImage: function(e) {
+    if (this.data.editStatus) {
+      return false
+    }
     var that = this
     var imgId = e.currentTarget.dataset.id
     var token = wx.getStorageSync('token')
