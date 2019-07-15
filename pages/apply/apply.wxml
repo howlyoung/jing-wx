@@ -8,14 +8,6 @@
       <view class="weui-cells weui-cells_after-title">
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>发票内容</view>
-          </view>
-          <view class='weui-cell__bd'>
-            <textarea class='weui-textarea' disabled="true" disabled="true" style='height: 3.3em'>{{ticketContent}}</textarea>
-          </view>
-        </view>
-        <view class='weui-cell weui-cell_input'>
-          <view class='weui-cell__hd'>
             <view class='weui-label'>发票类型</view>
           </view>
           <view class='weui-cell__bd'>

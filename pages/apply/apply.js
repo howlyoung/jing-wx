@@ -9,11 +9,11 @@ Page({
    */
   data: {
     imageTitleArr: [
-      { id: 'argeement', title: '三方协议', src: ''},
-      { id: 'agent', title: '代理证明', src: '' },
+      { id: 'agreement', title: '与自创客协议', src: ''},
+      { id: 'agent', title: '委托证明', src: '' },
       { id: 'id_card_u', title: '身份证正面', src: '' },
       { id: 'id_card_d', title: '身份证反面', src: '' },
-      { id: 'current', title: '现场照片', src: '' },
+      { id: 'current', title: '承诺书', src: '' },
       // { id: 'passport', title: '营业执照', src: '' }
     ],
     passportImage: '',
