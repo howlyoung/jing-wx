@@ -42,6 +42,21 @@
           </view>
         </view>
         <view class='weui-cell weui-cell_input'>
+        <label>发票类型</label>
+                <radio-group bindchange="radioChange" name="ticketType">
+          <label class="weui-cell weui-check__label" style="display:inline-block;" wx:for="{{radioItems}}" wx:key="index">
+            <radio data-id="{{item.key}}" value="{{item.value}}" checked="{{item.checked}}" />
+              <view class="weui-cell__bd">{{item.name}}</view>
+              <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
+                <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+              </view>
+          </label>
+        </radio-group>
+        </view>
+
+
+
+        <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
             <view class='weui-label'>邮箱</view>
           </view>
@@ -109,17 +124,6 @@
             <input class="weui-input" name='companyTel' id="companyTel" bindinput="inputContent" value='{{companyTel}}' placeholder=''></input>
           </view>
         </view>
-
-
-        <radio-group bindchange="radioChange" name="ticketType">
-          <label class="weui-cell weui-check__label" wx:for="{{radioItems}}" wx:key="index">
-            <radio data-id="{{item.key}}" value="{{item.value}}" checked="{{item.checked}}" />
-              <view class="weui-cell__bd">{{item.name}}</view>
-              <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
-                <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
-              </view>
-          </label>
-        </radio-group>
 
         <view class='weui-cell weui-cell'>
           <view class='weui-label'>

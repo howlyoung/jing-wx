@@ -94,7 +94,18 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that = this
 
+    commom.checkLoginStatus(function () {
+      var userStatus = wx.getStorageSync('user_status')
+      if (userStatus != 0) {
+        wx.navigateTo({
+          url: '../index/index',
+        })
+      } else {
+        that.initValidate()
+      }
+    })
   },
 
   /**

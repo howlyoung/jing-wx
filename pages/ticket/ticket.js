@@ -33,7 +33,8 @@ Page({
       { name: '普票', value: 0, key: 0 },
       { name: '专票', value: 1, key: 1 }
     ],
-    ticketType: ''
+    ticketType: '',
+    buttonSumit: true
   },
 
   /**
@@ -168,7 +169,7 @@ Page({
       },
     })
   },
-  upload: function() {
+  upload: function(e) {
       var that = this
       var data = this.data
 
@@ -177,39 +178,44 @@ Page({
       this.showModal(error)
       return false
     }
+    if (that.data.buttonSumit) {
+      that.setData({
+        buttonSumit: false
+      })
 
-
-    var flag = Math.random().toString(36).substr(2)
-    var token = wx.getStorageSync('token')
-    wx.request({
-      url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        flag: flag,
-        title: data.title,
-        amount: data.amount,
-        code: data.code,
-        expressAddress: data.expressAddress,
-        addressee: data.addressee,
-        mobile: data.mobile,
-        mail: data.mail,
-        bankCode: data.bankCode,
-        bankCard: data.bankCard,
-        ticketType: data.ticketType,
-        companyAddress: data.companyAddress,
-        companyTel: data.companyTel,
-        personName: data.personName
-      },
-      success: function(res) {
-        if(res.data.code == 1) {
-          var i = 0
-          that.uploadFile(that, data, token, i, flag)
+      var flag = Math.random().toString(36).substr(2)
+      var token = wx.getStorageSync('token')
+      wx.request({
+        url: app.globalData.URL + 'index.php?r=jing-ticket/create&token=' + token,
+        method: 'POST',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+          flag: flag,
+          title: data.title,
+          amount: data.amount,
+          code: data.code,
+          expressAddress: data.expressAddress,
+          addressee: data.addressee,
+          mobile: data.mobile,
+          mail: data.mail,
+          bankCode: data.bankCode,
+          bankCard: data.bankCard,
+          ticketType: data.ticketType,
+          companyAddress: data.companyAddress,
+          companyTel: data.companyTel,
+          personName: data.personName
+        },
+        success: function (res) {
+          if (res.data.code == 1) {
+            var i = 0
+            that.uploadFile(that, data, token, i, flag)
+          }
         }
-      }
-    })
+      })
+    }
+  
   },
   uploadFile: function(that,data,token,i,flag) {
     var length = data.imageTitleArr.length
