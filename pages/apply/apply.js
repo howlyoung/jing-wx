@@ -240,7 +240,29 @@ Page({
       }
     })
   },
+  handleImagePreview: function (e) {
+    if (this.endTime - this.startTime < 350) {
+      var urls = []
+      var type = e.currentTarget.dataset['type']
+      var current = e.currentTarget.dataset['index']
+      for (let i in this.data.imageTitleArr) {
+        if (type == this.data.imageTitleArr[i].id) {
+          urls = this.data.imageTitleArr[i].src
+        }
+      }
+      wx.previewImage({
+        urls: urls,
+        current: urls[current]
+      })
+    }
 
+  },
+  bindtouchstart: function(e) {
+    this.startTime = e.timeStamp
+  },
+  bindtouchend: function(e) {
+    this.endTime = e.timeStamp
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

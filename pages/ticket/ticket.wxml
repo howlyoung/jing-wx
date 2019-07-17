@@ -7,7 +7,7 @@
       <view class="weui-cells weui-cells_after-title">
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>个体工商户名称</view>
+            <view class='weui-label'>个体工商户名称<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='personName' id="personName" bindinput="inputContent" placeholder='' value='{{personName}}'></input>
@@ -15,7 +15,7 @@
         </view>
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>抬头</view>
+            <view class='weui-label'>抬头<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <picker bindchange='pickerChange' range-key="{{'title'}}" value='{{index}}' range='{{ticket}}'>
@@ -27,7 +27,7 @@
         </view>
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>识别号</view>
+            <view class='weui-label'>识别号<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='code' id="code" bindinput="inputContent" value='{{code}}'></input>
@@ -35,14 +35,14 @@
         </view>
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>开票金额</view>
+            <view class='weui-label'>开票金额<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" id="amount" type='digit' bindinput="inputContent" name='amount' placeholder=''></input>
           </view>
         </view>
         <view class='weui-cell weui-cell_input'>
-        <label>发票类型</label>
+        <label>发票类型<span class="require">*</span></label>
                 <radio-group bindchange="radioChange" name="ticketType">
           <label class="weui-cell weui-check__label" style="display:inline-block;" wx:for="{{radioItems}}" wx:key="index">
             <radio data-id="{{item.key}}" value="{{item.value}}" checked="{{item.checked}}" />
@@ -53,36 +53,42 @@
           </label>
         </radio-group>
         </view>
-
-
-
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>邮箱</view>
+            <view class='weui-label'>发票内容<span class="require">*</span></view>
+          </view>
+          <view class='weui-cell__bd'>
+            <input class="weui-input" name='content' value='{{content}}'  id="content" bindinput="inputContent" placeholder=''></input>
+          </view>
+        </view>
+
+        <view class='weui-cell weui-cell_input' wx:if="{{receiveFlag == 0}}">
+          <view class='weui-cell__hd'>
+            <view class='weui-label'>邮箱<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='mail' value='{{mail}}'  id="mail" bindinput="inputContent" placeholder=''></input>
           </view>
         </view>
-        <view class='weui-cell weui-cell_input'>
+        <view class='weui-cell weui-cell_input' wx:if="{{receiveFlag == 1}}">
           <view class='weui-cell__hd'>
-            <view class='weui-label'>快递地址</view>
+            <view class='weui-label'>快递地址<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='expressAddress' id="expressAddress" bindinput="inputContent" value='{{expressAddress}}' placeholder=''></input>
           </view>
         </view>
-        <view class='weui-cell weui-cell_input'>
+        <view class='weui-cell weui-cell_input' wx:if="{{receiveFlag == 1}}">
           <view class='weui-cell__hd'>
-            <view class='weui-label'>收件人</view>
+            <view class='weui-label'>收件人<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='addressee' id="addressee" bindinput="inputContent" value='{{addressee}}' placeholder=''></input>
           </view>
         </view>
-        <view class='weui-cell weui-cell_input'>
+        <view class='weui-cell weui-cell_input' wx:if="{{receiveFlag == 1}}">
           <view class='weui-cell__hd'>
-            <view class='weui-label'>联系电话</view>
+            <view class='weui-label'>联系电话<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='mobile' id="mobile" bindinput="inputContent" value='{{mobile}}' placeholder=''></input>
@@ -130,17 +136,26 @@
             <button class='weui-btn'  size='mini' bindtap='addTitle'>新增抬头</button>
           </view>
         </view>
+
         <view class="weui-cell weui-cell" wx:for="{{imageTitleArr}}" wx:for-item="item">
-          <view class='weui-label'>
-            <button class='weui-btn' id='{{item.id}}' size='mini' bindtap='chooseImage'>{{item.title}}</button>
+          <view class='content'>
+            <view class='img-box'>
+              <view class='img-list'>
+                <block wx:if="{{item.src != ''}}" wx:for="{{item.src}}" wx:for-item="imgItem" wx:key="index">
+                  <view class='img-item'>
+                    <image src="{{imgItem}}" data-index="{{index}}" data-type="{{item.id}}" mode="aspectFill"  bindtap="handleImagePreview"></image>
+                  </view>
+                </block>
+                <view class='chooseimg' id='{{item.id}}' bindtap='chooseImage'>
+                  <view class="weui-uploader__input-box"></view>
+                </view>
+              </view>
+              <view class='tips'>{{item.title}}</view>
+            </view>
           </view>
-          <view class="weui-cell weui-cell">
-            <block wx:if="{{item.src != ''}}" wx:for="{{item.src}}" wx:for-item="imgItem">
-              <image src="{{imgItem}}" mode="aspectFill"  bindtap="handleImagePreview"></image>
-            </block>
           </view>
-        </view>
       </view>
+
       <view class="section">
         <button class='weui-btn' type='primary' bindtap='upload'>提交</button>
       </view>

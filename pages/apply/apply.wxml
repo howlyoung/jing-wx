@@ -53,17 +53,41 @@
           <view class='weui-cell__bd'>
             <input class="weui-input" id='bankCode' disabled="{{editStatus}}" bindinput="inputContent" value="{{form.bankCode}}" placeholder=''></input>
           </view>
-        </view>        
-        <view class="weui-cell weui-cell" wx:for="{{imageTitleArr}}" wx:for-item="item">
+        </view> 
+
+
+        <!-- <view class="weui-cell weui-cell" wx:for="{{imageTitleArr}}" wx:for-item="item">
           <view class='weui-label'>
             <button class='weui-btn' id='{{item.id}}' disabled="{{editStatus}}" size='mini' bindtap='chooseImage'>{{item.title}}</button>
           </view>
           <view class="weui-cell weui-cell">
             <block wx:if="{{item.src != ''}}" wx:for="{{item.src}}" wx:for-item="imgItem">
-              <image class="thumb-image" src="{{imgItem}}" mode="aspectFill" data-id="{{index}}" bindlongtap="delImage" ></image>
+              <image class="thumb-image" src="{{imgItem}}" mode="aspectFill" data-id="{{index}}"  data-index="{{index}}" data-type="{{item.id}}" bindtouchstart="bindtouchstart" bindtouchend="bindtouchend" bindtap="handleImagePreview" bindlongtap="delImage" ></image>
             </block>
           </view>
-        </view>
+        </view> -->
+
+        <view class="weui-cell weui-cell" wx:for="{{imageTitleArr}}" wx:for-item="item">
+          <view class='content'>
+            <view class='img-box'>
+              <view class='img-list'>
+                <block wx:if="{{item.src != ''}}" wx:for="{{item.src}}" wx:for-item="imgItem" wx:key="index">
+                  <view class='img-item'>
+                    <image src="{{imgItem}}" data-index="{{index}}" data-type="{{item.id}}" mode="aspectFill"  bindtouchstart="bindtouchstart" bindtouchend="bindtouchend" bindtap="handleImagePreview" bindlongtap="delImage"></image>
+                  </view>
+                </block>
+                <view class='chooseimg' id='{{item.id}}' bindtap='chooseImage'>
+                  <view class="weui-uploader__input-box"></view>
+                </view>
+              </view>
+              <view class='tips'>{{item.title}}</view>
+            </view>
+          </view>
+          </view>
+
+
+
+
       </view>
       <view class="section" wx:if="{{!editStatus}}">
         <button class='weui-btn' type='primary' bindtap='upload'>提交</button>

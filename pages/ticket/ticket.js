@@ -34,7 +34,9 @@ Page({
       { name: '专票', value: 1, key: 1 }
     ],
     ticketType: '',
-    buttonSumit: true
+    buttonSumit: true,
+    receiveFlag: -1,
+    content: ''
   },
 
   /**
@@ -50,19 +52,40 @@ Page({
         var r = res.data
         if (r.code == 1 && r.data.length != 0) {
           that.setData({
-            ticket: r.data,
-            code: r.data[0].code,
-            expressAddress: r.data[0].expressAddress,
-            addressee: r.data[0].addressee,
-            mobile: r.data[0].mobile,
-            mail: r.data[0].mail,
-            title: r.data[0].title,
+            ticket: r.data.list,
+            code: r.data.list[0].code,
+            expressAddress: r.data.list[0].expressAddress,
+            addressee: r.data.list[0].addressee,
+            mobile: r.data.list[0].mobile,
+            mail: r.data.list[0].mail,
+            title: r.data.list[0].title,
             titleFlag: true,
-            bankCode: r.data[0].bankCode,
-            bankCard: r.data[0].bankCard,
-            companyAddress: r.data[0].companyAddress,
-            companyTel: r.data[0].companyTel
+            bankCode: r.data.list[0].bankCode,
+            bankCard: r.data.list[0].bankCard,
+            companyAddress: r.data.list[0].companyAddress,
+            companyTel: r.data.list[0].companyTel,
+            imageTitleArr: r.data.imageArr,
+            personName: r.data.personName
           })
+          
+          for (let index in r.data.imageArr) {
+            if (r.data.imageArr[index].src.length != 0) {
+              for(let key in r.data.imageArr[index].src) {
+                wx.downloadFile({
+                  url: r.data.imageArr[index].src[key],
+                  success: function(res) {
+                    if(res.statusCode == 200) {
+                      r.data.imageArr[index].src[key] = res.tempFilePath
+                      that.setData({
+                        imageTitleArr: r.data.imageArr
+                      })
+                      console.log(that.data)
+                    }
+                  }
+                })
+              }
+            }
+          }
         } else if(r.code == -1) {
           common.login(function () {
             wx.showModal({
@@ -149,6 +172,7 @@ Page({
   chooseImage: function (e) {
     var that = this
     var id = e.currentTarget.id
+    console.log(e)
 
     wx.chooseImage({
       success: function (res) {
@@ -172,8 +196,20 @@ Page({
   upload: function(e) {
       var that = this
       var data = this.data
-
-    if (!this.WxValidate.checkForm({ title: data.title, code: data.code, amount: data.amount, ticketType: data.ticketType, personName: data.personName})) {
+    var validate = { title: data.title, code: data.code, amount: data.amount, ticketType: data.ticketType, personName: data.personName ,content: data.content}
+      if(that.data.receiveFlag == 0) {
+        validate['mail'] = that.data.mail
+        validate['expressAddress'] = that.data.expressAddress == '' ? '无' : that.data.expressAddress
+        validate['addressee'] = that.data.addressee == '' ? '无' : that.data.addressee
+        validate['mobile'] = that.data.mobile == '' ? '无' : that.data.mobile
+      } else if (that.data.receiveFlag == 1) {
+        validate['expressAddress'] = that.data.expressAddress
+        validate['addressee'] = that.data.addressee
+        validate['mobile'] = that.data.mobile
+        validate['mail'] = that.data.mail == '' ? '无' : that.data.mail
+      }
+console.log(validate)
+    if (!this.WxValidate.checkForm(validate)) {
       const error = this.WxValidate.errorList[0]
       this.showModal(error)
       return false
@@ -205,7 +241,8 @@ Page({
           ticketType: data.ticketType,
           companyAddress: data.companyAddress,
           companyTel: data.companyTel,
-          personName: data.personName
+          personName: data.personName,
+          content: data.content
         },
         success: function (res) {
           if (res.data.code == 1) {
@@ -263,9 +300,24 @@ Page({
     }
 
   },
+  handleImagePreview: function(e) {
+    var urls = []
+    var type = e.currentTarget.dataset['type']
+    var current = e.currentTarget.dataset['index']
+    for (let i in this.data.imageTitleArr) {
+      if(type == this.data.imageTitleArr[i].id) {
+        urls = this.data.imageTitleArr[i].src
+      }
+    }
+    wx.previewImage({
+      urls: urls,
+      current: urls[current]
+    })
+  },
   radioChange: function(res) {
     this.setData({
-      ticketType: res.detail.value
+      ticketType: res.detail.value,
+      receiveFlag: res.detail.value
     })
   },
   inputContent: function (input) {
@@ -343,6 +395,21 @@ Page({
       },
       personName: {
         required: true
+      },
+      expressAddress: {
+        required: true
+      },
+      mobile: {
+        required: true
+      },
+      addressee: {
+        required: true
+      },
+      mail: {
+        required: true
+      },
+      content: {
+        required: true
       }
     }
 
@@ -364,6 +431,21 @@ Page({
       },
       personName: {
         required: '请填写个人工商户'
+      },
+      expressAddress: {
+        required: '请填写收件地址'
+      },
+      mobile: {
+        required: '请填写收件人手机'
+      },
+      addressee: {
+        required: '请填写收件人姓名'
+      },
+      mail: {
+        required: '请填写邮箱'
+      },
+      content: {
+        required: '请填写发票内容'
       }
     }
     this.WxValidate = new WxValidate(rules, messages)
