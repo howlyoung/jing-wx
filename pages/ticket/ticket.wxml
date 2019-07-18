@@ -97,7 +97,7 @@
 
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>开户行</view>
+            <view class='weui-label'>开户行<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='bankCode' id="bankCode" bindinput="inputContent" value='{{bankCode}}' placeholder=''></input>
@@ -106,7 +106,7 @@
 
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>银行账号</view>
+            <view class='weui-label'>银行账号<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='bankCard' id="bankCard" bindinput="inputContent" value='{{bankCard}}' placeholder=''></input>
@@ -115,7 +115,7 @@
 
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>开票地址</view>
+            <view class='weui-label'>开票地址<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='companyAddress' id="companyAddress" bindinput="inputContent" value='{{companyAddress}}' placeholder=''></input>
@@ -124,7 +124,7 @@
 
         <view class='weui-cell weui-cell_input'>
           <view class='weui-cell__hd'>
-            <view class='weui-label'>公司电话</view>
+            <view class='weui-label'>公司电话<span class="require">*</span></view>
           </view>
           <view class='weui-cell__bd'>
             <input class="weui-input" name='companyTel' id="companyTel" bindinput="inputContent" value='{{companyTel}}' placeholder=''></input>

@@ -196,7 +196,7 @@ Page({
   upload: function(e) {
       var that = this
       var data = this.data
-    var validate = { title: data.title, code: data.code, amount: data.amount, ticketType: data.ticketType, personName: data.personName ,content: data.content}
+    var validate = { title: data.title, code: data.code, amount: data.amount, ticketType: data.ticketType, personName: data.personName, content: data.content, bankCode: data.bankCode, bankCard: data.bankCard, companyAddress: data.companyAddress, companyTel: data.companyTel}
       if(that.data.receiveFlag == 0) {
         validate['mail'] = that.data.mail
         validate['expressAddress'] = that.data.expressAddress == '' ? '无' : that.data.expressAddress
@@ -379,8 +379,7 @@ console.log(validate)
   initValidate: function () {
     const rules = {
       title: {
-        required: true,
-        rangelength: [1, 200]
+        required: true
       },
       code: {
         required: true,
@@ -410,17 +409,28 @@ console.log(validate)
       },
       content: {
         required: true
-      }
+      },
+      bankCode: {
+        required: true
+      },
+      bankCard: {
+        required: true
+      },
+      companyAddress: {
+        required: true
+      },
+      companyTel: {
+        required: true
+      },
     }
 
     const messages = {
       title: {
-        required: '请输入抬头',
-        rangelength: ''
+        required: '请输入抬头'
       },
       code: {
         required: '请输入识别号',
-        rangelength: ''
+        rangelength: '识别号长度不正确'
       },
       amount: {
         required: '请输入开票金额',
@@ -446,7 +456,19 @@ console.log(validate)
       },
       content: {
         required: '请填写发票内容'
-      }
+      },
+      bankCode: {
+        required: '请填写开户行'
+      },
+      bankCard: {
+        required: '请填写银行账号'
+      },
+      companyAddress: {
+        required: '请填写开票地址'
+      },
+      companyTel: {
+        required: '请填写公司电话'
+      },
     }
     this.WxValidate = new WxValidate(rules, messages)
   },
