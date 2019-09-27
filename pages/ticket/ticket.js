@@ -214,6 +214,15 @@ console.log(validate)
       this.showModal(error)
       return false
     }
+
+    var imageArr = data.imageTitleArr
+    for (var i in imageArr) {
+      if (imageArr[i].src.length == 0) {
+        this.showModal({ msg: imageArr[i].title + '未上传' })
+        return false
+      }
+    }
+
     if (that.data.buttonSumit) {
       that.setData({
         buttonSumit: false
